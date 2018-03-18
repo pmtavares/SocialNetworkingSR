@@ -26,6 +26,21 @@ namespace SocialNetworkingSignalR.Controllers
             return View();
         }
 
+        //GET: /{username}
+        public string Username(string username = "")
+        {
+            return username;
+        }
+
+        //Get: account/logout
+        [Authorize]
+        public ActionResult Logout()
+        {
+            FormsAuthentication.SignOut();
+
+            return Redirect("~/");
+        }
+
 
         public ActionResult CreateAccount(UserVM model, HttpPostedFileBase file)
         {

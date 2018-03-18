@@ -14,11 +14,29 @@ namespace SocialNetworkingSignalR
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
-                name: "Deafult",
+                name: "Default",
                 url: "",
                 defaults: new { controller = "Account", action="Index", id = UrlParameter.Optional }                
                 );
 
+            routes.MapRoute(
+                "CreateAccount", 
+                "Account/CreateAccount", 
+                new {
+                    controller = "Account",
+                    action = "CreateAccount"
+                }
+            );
+
+            routes.MapRoute(
+                "Account", 
+                "{username}", 
+                new
+                {
+                    controller = "Account",
+                    action = "Username"
+                }
+             );
             //routes.MapRoute(
             //    name: "Default",
             //    url: "{controller}/{action}/{id}",
