@@ -219,7 +219,9 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Uploads\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
   </ItemGroup>
