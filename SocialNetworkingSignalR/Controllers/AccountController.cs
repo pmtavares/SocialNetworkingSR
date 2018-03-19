@@ -113,5 +113,23 @@ namespace SocialNetworkingSignalR.Controllers
         {
             return PartialView();
         }
+
+        //Post: account/login
+        [HttpPost]
+        public string LoginPartial(string username, string password)
+        {
+            Db db = new Db();
+
+            if(db.Users.Any(x => x.Username.Equals(username) && x.Password.Equals(password)))
+            {
+                //Login
+                FormsAuthentication.SetAuthCookie(username, false);
+                return "ok";
+            }
+            else
+            {
+                return "There was a problem when trying to login";
+            }
+        }
     }
 }

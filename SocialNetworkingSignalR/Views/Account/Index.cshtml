@@ -31,7 +31,7 @@
 
 
 
-                @using (Html.BeginForm("CreateAccount", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                @using (Html.BeginForm("CreateAccount", "Account", FormMethod.Post, new {  id = "createform", enctype = "multipart/form-data" }))
                 {
                     @Html.AntiForgeryToken()
 
@@ -110,6 +110,34 @@
 
     <script>
         $(function () {
+            $("form#loginform").submit(function (e) {
+                e.preventDefault();
+
+                var $this = $(this);
+
+                $this.find(".ajaxdiv").removeClass("hide");
+                debugger
+                var username = $("#UsernameLogin").val();
+                var password = $("#PasswordLogin").val();
+                var url = "Account/Login";
+                debugger
+                $.post(url, { username: username, password: password }, function (data) {
+                    var response = data.trim();
+
+                    if (response == "ok") {
+                        document.location.href = "/";
+                    }
+                    else {
+                        $this.find(".ajaxdiv").addClass("hide");
+                        $("div.em").fadeIn("fast");
+                        setTimeout(function () {
+                            $("div.em").fadeOut("fast");
+                        }, 2000);
+                    }
+
+                });
+            });
+
 
             //Preview Selected Image
             function readURL(input) {
@@ -130,6 +158,8 @@
             });
 
         });
+
+
 
     </script>
 
