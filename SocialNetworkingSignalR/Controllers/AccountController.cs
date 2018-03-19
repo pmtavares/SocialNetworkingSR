@@ -108,5 +108,10 @@ namespace SocialNetworkingSignalR.Controllers
             return Redirect("~/" + model.Username);
         }
 
+
+        public ActionResult LoginPartial()
+        {
+            return PartialView();
+        }
     }
 }
