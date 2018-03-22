@@ -20,7 +20,11 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    
+                    <li class="livesearch">
+                        <input type="text" class="searchtext" id="searchtext" placeholder="Search people..." />
+                        <ul id="livesearch"></ul>
+
+                    </li>
                 </ul>
                 @if (Request.IsAuthenticated)
                 {

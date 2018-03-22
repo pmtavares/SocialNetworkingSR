@@ -30,6 +30,13 @@ namespace SocialNetworkingSignalR.Controllers
         [Authorize]
         public ActionResult Username(string username = "")
         {
+            Db db = new Db();
+            if(!db.Users.Any(x => x.Username.Equals(username)))
+            {
+                return Redirect("~/");
+            }
+
+            ViewBag.Username = username;
             return View();
         }
 

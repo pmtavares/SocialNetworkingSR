@@ -29,3 +29,16 @@ div.em{
     bottom: 30px;
     right: -10px;
 }
+.livesearch
+{
+    width: 300px;
+    display: block;
+    padding: 10px;
+    position: relative;
+
+}
+#searchtext
+{
+    position: relative;
+    padding: 5px 10px;
+}
