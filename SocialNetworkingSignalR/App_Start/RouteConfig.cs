@@ -66,6 +66,17 @@ namespace SocialNetworkingSignalR
                     action = "LoginPartial"
                 }
              );
+
+            routes.MapRoute(
+                "Profile",
+                "Profile/{action}/{id}",
+                new
+                {
+                    controller = "Profile",
+                    action = "index",
+                    id = UrlParameter.Optional
+                }
+             );
             //routes.MapRoute(
             //    name: "Default",
             //    url: "{controller}/{action}/{id}",

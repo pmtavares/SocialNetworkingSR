@@ -6,3 +6,47 @@
 
 <h2>Username</h2>
 
+
+
+@section Scripts{
+    
+<script>
+    $(function () {
+
+        //Live search
+        $("#searchtext").keyup(function () {
+ 
+            var searchVal = $("#searchtext").val();
+
+            $("#livesearch").empty();
+
+
+            if (searchVal == "" || searchVal == " ") {
+                return false;
+            }
+            var url = "profile/LiveSearch";
+
+            $.post(url, { search:  searchVal }, function (data) {
+                if (data.length > 0) {
+                    $("#livesearch").append("<li class=closeSearch>X</li>");
+                }
+                for (var i = 0; i < data.length; i++) {
+                    var obj = data[i];
+                    $("#livesearch")
+                        .append("<li class='livesearchli'><a href='/" + obj.Username + "'><img src='/Uploads/" + obj.UserId + ".jpg' class=searchImg />" + " " + " " + obj.FirstName + " " + obj.LastName + "</a></li>");
+                        
+                }
+            });
+        })
+
+    });
+
+
+    $("body").on("click", ".closeSearch", function () {
+        $("#livesearch").empty();
+        $("#searchtext").val("");
+    });
+
+</script>    
+    
+}

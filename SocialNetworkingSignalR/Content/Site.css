@@ -42,3 +42,27 @@ div.em{
     position: relative;
     padding: 5px 10px;
 }
+
+.searchImg {
+    width: 50px;
+}
+
+#livesearch {
+    position: absolute;
+    background: #222;
+    right: -10px;
+    top: 70px;
+    padding: 0px;
+    list-style: none;
+    width: 220px;
+}
+.closeSearch {
+    position: absolute;
+    color: white;
+    opacity: 1 !important;
+    right: 10px;
+    list-style: none;
+    top: 0;
+    cursor: pointer;
+    z-index: 10;
+}
