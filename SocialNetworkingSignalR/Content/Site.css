@@ -66,3 +66,11 @@ div.em{
     cursor: pointer;
     z-index: 10;
 }
+
+.userimg img{
+    width: 200px;
+}
+.fullname{
+    margin-top: 15px;
+    color: white;
+}

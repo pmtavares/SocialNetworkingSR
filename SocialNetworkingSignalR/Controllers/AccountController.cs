@@ -37,6 +37,16 @@ namespace SocialNetworkingSignalR.Controllers
             }
 
             ViewBag.Username = username;
+
+            string user = User.Identity.Name;
+            UserDTO userDTO = db.Users.Where(x => x.Username.Equals(user)).FirstOrDefault();
+            ViewBag.FullName = userDTO.FirstName + " " + userDTO.LastName;
+
+            UserDTO userDTO2 = db.Users.Where(x => x.Username.Equals(username)).FirstOrDefault();
+            ViewBag.ViewFullName = userDTO2.FirstName + " " + userDTO2.LastName;
+
+            ViewBag.UsernameImage = userDTO2.Id + ".jpg";
+
             return View();
         }
 
