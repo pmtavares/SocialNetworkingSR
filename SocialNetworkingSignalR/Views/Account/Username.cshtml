@@ -19,6 +19,10 @@
 
 
 @section Scripts{
+
+<script src="~/Scripts/jquery.signalR-2.1.2.min.js"></script>
+<script src="/signalr/hubs"></script>
+
     
 <script>
     $(function () {
@@ -56,6 +60,27 @@
         $("#livesearch").empty();
         $("#searchtext").val("");
     });
+
+    /*
+    *   Hub
+    *
+    */
+    //Setup connection
+    var hub = $.connection.echo;
+
+    //client function to be called from server
+    hub.client.test = function (msg) {
+        console.log(msg);
+    }
+
+    //Connect to hub
+    $.connection.hub
+        .start()
+        .done(function () {
+            hub.server.hello("SignalR working");
+
+    })
+
 
 </script>    
     
