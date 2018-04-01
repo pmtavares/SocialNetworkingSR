@@ -77,6 +77,17 @@ namespace SocialNetworkingSignalR
                     id = UrlParameter.Optional
                 }
              );
+
+            routes.MapRoute(
+                "AddFriend",
+                "Profile/{action}",
+                new
+                {
+                    controller = "Profile",
+                    action = "AddFriend",
+                    id = UrlParameter.Optional
+                }
+             );
             //routes.MapRoute(
             //    name: "Default",
             //    url: "{controller}/{action}/{id}",

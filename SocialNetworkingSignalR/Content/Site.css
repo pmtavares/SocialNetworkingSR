@@ -23,6 +23,7 @@ div.em{
     display: none;
 }
 
+
 #loginform .ajaxdiv
 {
     position: absolute;
@@ -73,4 +74,15 @@ div.em{
 .fullname{
     margin-top: 15px;
     color: white;
+}
+.frnotif{
+    color: white;
+    margin-top: 15px;
+    margin-right: 5px;
+}
+
+.red {
+    color: red;
+    cursor: pointer;
+
 }

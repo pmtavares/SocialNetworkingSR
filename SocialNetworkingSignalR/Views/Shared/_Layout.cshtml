@@ -29,6 +29,21 @@
                 @if (Request.IsAuthenticated)
                 {
                     <ul class="nav navbar-nav navbar-right owner">
+                        <li class="frcountli">
+                            @if(ViewBag.FRCount != null)
+                            {
+                                <span class="glyphicon glyphicon-user frnotif @User.Identity.Name">
+                                    @ViewBag.FRCount
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="glyphicon glyphicon-user frnotif @User.Identity.Name">
+                                    
+                                </span>
+                            }
+
+                        </li>
                         <li class="fullname"> @ViewBag.FullName</li>
                         <li class="logout">@Html.ActionLink("Logout", "Logout", "Account")</li>
                     </ul>

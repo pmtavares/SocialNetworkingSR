@@ -9,5 +9,6 @@ namespace SocialNetworkingSignalR.Models.Data
     public class Db : DbContext
     {
         public DbSet<UserDTO> Users { get; set; }
+        public DbSet<FriendDTO> Friends { get; set; }
     }
 }

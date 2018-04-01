@@ -38,14 +38,71 @@ namespace SocialNetworkingSignalR.Controllers
 
             ViewBag.Username = username;
 
+            
+            //get view full name
             string user = User.Identity.Name;
             UserDTO userDTO = db.Users.Where(x => x.Username.Equals(user)).FirstOrDefault();
             ViewBag.FullName = userDTO.FirstName + " " + userDTO.LastName;
 
+
+            //Get user's id
+            int userId = userDTO.Id;
+
             UserDTO userDTO2 = db.Users.Where(x => x.Username.Equals(username)).FirstOrDefault();
             ViewBag.ViewFullName = userDTO2.FirstName + " " + userDTO2.LastName;
 
+
+
             ViewBag.UsernameImage = userDTO2.Id + ".jpg";
+
+            //check user type
+            ViewBag.UserType = "guest";
+
+            if(username.Equals(user))
+            {
+                ViewBag.UserType = "owner";
+            }
+
+            //Check if they are friends
+            if (ViewBag.UserType == "guest")
+            {
+                UserDTO u1 = db.Users.Where(x => x.Username.Equals(user)).FirstOrDefault();
+                int id1 = u1.Id;
+
+                UserDTO u2 = db.Users.Where(x => x.Username.Equals(username)).FirstOrDefault();
+                int id2 = u2.Id;
+
+                FriendDTO f1 = db.Friends.Where(x => x.User1 == id1 && x.User2 == id2).FirstOrDefault();
+                FriendDTO f2 = db.Friends.Where(x => x.User1 == id2 && x.User2 == id1).FirstOrDefault();
+
+
+                if (f1 == null && f2 ==null)
+                {
+                    ViewBag.NotFriends = "True";
+                }
+                if (f1 != null)
+                {
+                    if(!f1.Active)
+                    {
+                        ViewBag.NotFriends = "Pending";
+                    }
+                    
+                }
+                if (f2 != null)
+                {
+                    if(!f2.Active)
+                    {
+                        ViewBag.NotFriends = "Pending";
+                    }
+                    
+                }
+            }
+            //Get friends request count
+            var friendCount = db.Friends.Count(x => x.User2 == userId && x.Active == false);
+            if(friendCount > 0)
+            {
+                ViewBag.FRCount = friendCount;
+            }
 
             return View();
         }
@@ -149,5 +206,7 @@ namespace SocialNetworkingSignalR.Controllers
                 return "There was a problem when trying to login";
             }
         }
+
+       
     }
 }
