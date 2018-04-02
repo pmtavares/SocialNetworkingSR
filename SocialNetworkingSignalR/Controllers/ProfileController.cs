@@ -75,5 +75,25 @@ namespace SocialNetworkingSignalR.Controllers
 
             return Json(users);
         }
+
+        //Accept frinds request
+        [HttpPost]
+        public void AcceptFriendRequest( int friendId)
+        {
+
+            //Init DB
+            Db db = new Db();
+            //Get user id
+
+            UserDTO userDTO = db.Users.Where(x => x.Username.Equals(User.Identity.Name)).FirstOrDefault();
+            int userId = userDTO.Id;
+
+            FriendDTO friendDTO = db.Friends.Where(x => x.User1 == friendId && x.User2 == userId).FirstOrDefault();
+
+            friendDTO.Active = true;
+
+            db.SaveChanges();
+
+        }
     }
 }

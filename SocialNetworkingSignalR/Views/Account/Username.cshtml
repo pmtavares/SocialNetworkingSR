@@ -34,6 +34,10 @@
             </div>
         }
 
+        <div class="friends @User.Identity.Name alert alert-success">
+            <span>@ViewBag.FCount friend(s)</span>
+        </div>
+
     </div>
 
 
@@ -80,10 +84,7 @@
 
     //Display friends request
     $("body").on("click", ".frnotif.red", function () {
-
-
         $("#frnotiful").empty();
-
         var url = "profile/DisplayFriendRequest";
 
         $.post(url, { }, function (data) {
@@ -102,6 +103,23 @@
         });
     })
 
+    //Accept friends request
+    $("body").on("click", ".accept", function (e) {
+        e.preventDefault();
+        var $this = $(this);
+
+        var url = "profile/AcceptFriendRequest";
+        var friendId = $this.data("id");
+
+        $.post(url, { friendId: friendId}, function (data) {
+          
+        }).done(function () {
+            $this.parent().fadeOut("fast");
+            hub.server.getFrCount();
+            hub.server.getFCount(friendId);
+            });
+    })
+
 
     $("body").on("click", ".closeSearch", function () {
         $("#livesearch").empty();
@@ -118,16 +136,7 @@
     //Setup connection
     var hub = $.connection.echo;
 
-    //client function to be called from server
-    hub.client.test = function (msg) {
-        console.log(msg);
-    }
-
-    hub.client.frnotify = function (f, count) {
-        $(".frnotif." + f).text(count);
-        $(".frnotif." + f).addClass("red");
-    }
-
+   
     //Connect to hub
     $.connection.hub
         .start()
@@ -151,7 +160,46 @@
 
             });
 
-    })
+        })
+
+     //client function to be called from server
+    hub.client.test = function (msg) {
+        console.log(msg);
+    }
+
+    hub.client.frnotify = function (f, count) {
+        $(".frnotif." + f).text(count);
+        $(".frnotif." + f).addClass("red");
+    }
+
+    hub.client.frcount = function (username, count) {
+        if (count > 0) {
+            $(".frnotif." + username).text(count);
+        }
+        else {
+            $(".frnotif." + username).text("");
+            $(".frnotif." + username).removeClass("red");
+            $("#frnotiful").text("");
+        }
+
+    }
+
+
+
+    hub.client.fcount = function (u1, u2, count1, count2) {
+        if (count1 > 0) {
+            $(".friends." + u1).text(count1 + " friend(s)");
+        }
+        else {
+            $(".friends." + u1).text("0");
+        }
+        if (count2 > 0) {
+            $(".friends." + u2).text(count2 + " friend(s)");
+        }
+        else {
+            $(".friends." + u2).text("0");
+        }
+    }
 
 
 </script>    

@@ -103,6 +103,13 @@ namespace SocialNetworkingSignalR.Controllers
             {
                 ViewBag.FRCount = friendCount;
             }
+            //Get friend count
+            UserDTO uDTO = db.Users.Where(x => x.Username.Equals(username)).FirstOrDefault();
+            int usernameId = uDTO.Id;
+
+            var friendCount2 = db.Friends.Count(x => x.User2 == usernameId && x.Active == true || x.User1 == usernameId && x.Active == true);
+
+            ViewBag.FCount = friendCount2;
 
             return View();
         }

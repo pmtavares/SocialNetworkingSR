@@ -6,6 +6,7 @@ using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 using System.Diagnostics;
 using SocialNetworkingSignalR.Models.Data;
+using System.Web.Mvc;
 
 namespace SocialNetworkingSignalR
 {
@@ -39,6 +40,55 @@ namespace SocialNetworkingSignalR
 
             //call js function
             clients.frnotify(friend, frcount);
+
+        }
+
+        public void getFrCount()
+        {
+            // init db
+             Db db = new Db();
+
+            //get friend id
+            UserDTO userDTO = db.Users.Where(x => x.Username.Equals(Context.User.Identity.Name)).FirstOrDefault();
+            int userId = userDTO.Id;
+
+            //get fr count
+            var friendReqCount = db.Friends.Count(x => x.User2 == userId && x.Active == false);
+
+            //set clients
+            var clients = Clients.Caller;
+
+
+            //call js function
+            clients.frcount(Context.User.Identity.Name, friendReqCount);
+        }
+
+        public void GetFCount(int friendId)
+        {
+            // init db
+            Db db = new Db();
+
+            //get user id
+            UserDTO userDTO = db.Users.Where(x => x.Username.Equals(Context.User.Identity.Name)).FirstOrDefault();
+            int userId = userDTO.Id;
+
+            //Get friend count for user
+            var friendCount1 = db.Friends.Count(x => x.User2 == userId && x.Active == true || x.User1 == userId && x.Active == true);
+
+            //Get user2 username
+            UserDTO userDTO2 = db.Users.Where(x => x.Id == friendId).FirstOrDefault();
+            string username = userDTO2.Username;
+
+            //Get friend count for user
+            var friendCount2 = db.Friends.Count(x => x.User2 == friendId && x.Active == true || x.User1 == friendId && x.Active == true);
+
+            //set clients
+            var clients = Clients.All;
+
+
+            //call js function
+            clients.fcount(Context.User.Identity.Name, username, friendCount1, friendCount2);
+
 
         }
     }
