@@ -39,7 +39,24 @@
         </div>
 
     </div>
+    <div class="col-xs-12 col-md-6 wall">
+        @if (ViewBag.UserType == "guest")
+        {
+            if (ViewBag.NotFriends == null)
+            {
+                <div class="sendmsgparent">
+                    <div class="msgtextarea">
+                        <textarea id="msgarea"></textarea>
+                    </div>
+                    <a href="#" id="sendmsg" class="ta">Send Message</a>
+                    <img src="~/Content/Images/ajax-loaderblack.gif" class="hide" />
+                    <div class="sendmsgnotif alert alert-success hide">Message Sent</div>
+                </div>
+            }
 
+        }
+
+    </div>
 
 </div>
 
@@ -177,6 +194,35 @@
                     $this.parent().fadeOut("fast");
                     hub.server.getFrCount();
                     
+                });
+            })
+
+            /*
+            * Send message
+            */
+            $("body").on("click", "#sendmsg", function (e) {
+                e.preventDefault();
+                var $this = $(this);
+                debugger
+                $this.parent().find("img").removeClass("hide");
+
+                var url = "profile/SendMessage";
+                var friend = "@ViewBag.Username";
+                var message = $("#msgarea").val();
+
+                $.post(url, { friend: friend, message: message }, function (data) {
+
+                }).done(function () {
+                    $this.parent().find("img").addClass("hide");
+                    //hub.server.notifyOfMessage(friend);
+                    $("#msgarea").val("");
+                    $this.parent().find(".sendmsgnotif").removeClass("hide");
+                    setTimeout(function () {
+                        $this.parent().find(".sendmsgnotif").fadeOut("fast", function () {
+                            $this.parent().find(".sendmsgnotif").addClass("hide");
+                        });
+                        
+                    }, 2000);
                 });
             })
            

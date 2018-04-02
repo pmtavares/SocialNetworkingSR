@@ -114,5 +114,35 @@ namespace SocialNetworkingSignalR.Controllers
 
             db.SaveChanges();
         }
+        [HttpPost]
+        public void SendMessage(string friend, string message)
+        {
+            //Init DB
+            Db db = new Db();
+            //Get user id
+
+            //get user id
+            UserDTO userDTO = db.Users.Where(x => x.Username.Equals(User.Identity.Name)).FirstOrDefault();
+            int userId = userDTO.Id;
+            //Get friend id
+            UserDTO userDTO2 = db.Users.Where(x => x.Username.Equals(friend)).FirstOrDefault();
+            int userId2 = userDTO2.Id;
+
+            //save message
+            MessageDTO msgDto = new MessageDTO {
+                UserFrom = userId,
+                UserTo = userId2,
+                Message = message,
+                DataSent = DateTime.Now,
+                UserRead = false
+
+            };
+
+            db.Messages.Add(msgDto);
+            db.SaveChanges();
+
+
+
+        }
     }
 }
