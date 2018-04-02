@@ -95,5 +95,24 @@ namespace SocialNetworkingSignalR.Controllers
             db.SaveChanges();
 
         }
+        [HttpPost]
+        public void DeclineFriendRequest(int friendId)
+        {
+            //Init DB
+            Db db = new Db();
+            //Get user id
+
+            UserDTO userDTO = db.Users.Where(x => x.Username.Equals(User.Identity.Name)).FirstOrDefault();
+            int userId = userDTO.Id;
+
+
+            //delete friend request
+
+            FriendDTO friendDTO = db.Friends.Where(x => x.User1 == friendId && x.User2 == userId).FirstOrDefault();
+
+            db.Friends.Remove(friendDTO);
+
+            db.SaveChanges();
+        }
     }
 }

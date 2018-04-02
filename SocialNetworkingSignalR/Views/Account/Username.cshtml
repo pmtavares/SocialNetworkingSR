@@ -103,22 +103,7 @@
         });
     })
 
-    //Accept friends request
-    $("body").on("click", ".accept", function (e) {
-        e.preventDefault();
-        var $this = $(this);
-
-        var url = "profile/AcceptFriendRequest";
-        var friendId = $this.data("id");
-
-        $.post(url, { friendId: friendId}, function (data) {
-          
-        }).done(function () {
-            $this.parent().fadeOut("fast");
-            hub.server.getFrCount();
-            hub.server.getFCount(friendId);
-            });
-    })
+    
 
 
     $("body").on("click", ".closeSearch", function () {
@@ -160,9 +145,46 @@
 
             });
 
+            //Accept friends request
+            $("body").on("click", ".accept", function (e) {
+                e.preventDefault();
+                var $this = $(this);
+
+                var url = "profile/AcceptFriendRequest";
+                var friendId = $this.data("id");
+
+                $.post(url, { friendId: friendId }, function (data) {
+
+                }).done(function () {
+                    $this.parent().fadeOut("fast");
+                    hub.server.getFrCount();
+                    hub.server.getFCount(friendId);
+                });
+            });
+
+
+            //Decline friends request
+            $("body").on("click", ".decline", function (e) {
+                e.preventDefault();
+                var $this = $(this);
+
+                var url = "profile/DeclineFriendRequest";
+                var friendId = $this.data("id");
+
+                $.post(url, { friendId: friendId }, function (data) {
+
+                }).done(function () {
+                    $this.parent().fadeOut("fast");
+                    hub.server.getFrCount();
+                    
+                });
+            })
+           
+
         })
 
-     //client function to be called from server
+  
+    //client function to be called from server
     hub.client.test = function (msg) {
         console.log(msg);
     }
@@ -183,7 +205,6 @@
         }
 
     }
-
 
 
     hub.client.fcount = function (u1, u2, count1, count2) {
