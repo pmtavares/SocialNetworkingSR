@@ -57,7 +57,8 @@ div.em{
     list-style: none;
     width: 220px;
 }
-.closeSearch {
+.closeSearch,
+.closefrlist {
     position: absolute;
     color: white;
     opacity: 1 !important;
@@ -67,6 +68,8 @@ div.em{
     cursor: pointer;
     z-index: 10;
 }
+
+
 
 .userimg img{
     width: 200px;
@@ -81,8 +84,24 @@ div.em{
     margin-right: 5px;
 }
 
+.frnotifli{
+    width: 300px;
+    display: block;
+    padding: 1px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+} 
+
+
 .red {
     color: red;
     cursor: pointer;
+}
+#frnotiful {
+    position: absolute;
+    top: 45px;
+    right: 0px;
+    background: #222;
+
 
 }

@@ -52,5 +52,28 @@ namespace SocialNetworkingSignalR.Controllers
             db.SaveChanges();
 
         }
+        [HttpPost]
+        public JsonResult DisplayFriendRequest()
+        {
+            //Init DB
+            Db db = new Db();
+            //Get user id
+
+            UserDTO userDTO = db.Users.Where(x => x.Username.Equals(User.Identity.Name)).FirstOrDefault();
+            int userId = userDTO.Id;
+            //Create list
+            List<FriendRequestVM> list = db.Friends.Where(x => x.User2 == userId && x.Active == false).ToArray()
+                .Select(x => new FriendRequestVM(x)).ToList();
+            //init lis of users
+            List<UserDTO> users = new List<UserDTO>();
+
+            foreach(var item in list)
+            {
+                var user = db.Users.Where(x => x.Id == item.User1).FirstOrDefault();
+                users.Add(user);
+            }
+
+            return Json(users);
+        }
     }
 }

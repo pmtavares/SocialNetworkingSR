@@ -78,10 +78,37 @@
 
     });
 
+    //Display friends request
+    $("body").on("click", ".frnotif.red", function () {
+
+
+        $("#frnotiful").empty();
+
+        var url = "profile/DisplayFriendRequest";
+
+        $.post(url, { }, function (data) {
+            if (data.length > 0) {
+                $("#frnotiful").append("<li class=closefrlist>X</li>");
+            }
+            for (var i = 0; i < data.length; i++) {
+                var obj = data[i];
+                $("#frnotiful")
+                    .append("<li class='frnotifli'><a href='/" + obj.Username + "'><img src='/Uploads/" + obj.Id + ".jpg' class=searchImg />" + " "
+                    + " " + obj.FirstName + " " + obj.LastName + "</a>" + "<a class='accept' href=# data-id='" + obj.Id +
+                    "'><span class='glyphicon glyphicon-ok'></span></a>" + " " + " <a class='decline' href =# data-id='" + obj.Id +
+                    "'><span class='glyphicon glyphicon-remove'></span></a></li>");
+
+            }
+        });
+    })
+
 
     $("body").on("click", ".closeSearch", function () {
         $("#livesearch").empty();
-        $("#searchtext").val("");
+    });
+
+    $("body").on("click", ".closefrlist", function () {
+        $("#frnotiful").empty();
     });
 
     /*
@@ -115,7 +142,7 @@
                 
                 var url = "/Profile/AddFriend";
                 $.post(url, { friend: friend }, function (data) {
-                    $(".addfriend").removeClass("alert-info").addClass("alert-warning")
+                    $(".arefriendsdiv").removeClass("alert-info").addClass("alert-warning")
                         .html("<p>pending friend request</p>");
                 }).done(function () {
                             hub.server.notify(friend);

@@ -32,7 +32,7 @@
                         <li class="frcountli">
                             @if(ViewBag.FRCount != null)
                             {
-                                <span class="glyphicon glyphicon-user frnotif @User.Identity.Name">
+                                <span class="glyphicon glyphicon-user red frnotif @User.Identity.Name">
                                     @ViewBag.FRCount
                                 </span>
                             }
@@ -42,6 +42,7 @@
                                     
                                 </span>
                             }
+                            <ul id="frnotiful"></ul>
 
                         </li>
                         <li class="fullname"> @ViewBag.FullName</li>
