@@ -144,5 +144,29 @@ namespace SocialNetworkingSignalR.Controllers
 
 
         }
+
+        //Unread messages
+        [HttpPost]
+        public JsonResult DisplayUnreadMessages()
+        {
+            //Init DB
+            Db db = new Db();
+            //Get user id
+
+            //get user id
+            UserDTO userDTO = db.Users.Where(x => x.Username.Equals(User.Identity.Name)).FirstOrDefault();
+            int userId = userDTO.Id;
+
+            List<MessageVM> list = db.Messages.Where(x => x.UserTo ==userId && x.UserRead == false).ToArray().Select(x =>
+                new MessageVM(x)).ToList();
+
+            //Make unread read
+            db.Messages.Where(x => x.UserTo == userId && x.UserRead == false).ToList().ForEach(x => x.UserRead = true);
+            db.SaveChanges();
+
+            return Json(list);
+
+
+        }
     }
 }

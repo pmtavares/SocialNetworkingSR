@@ -112,7 +112,7 @@ namespace SocialNetworkingSignalR.Controllers
             ViewBag.FCount = friendCount2;
 
             //get View bag Message count
-            var messageCount = db.Messages.Count(x => x.UserTo == usernameId && x.UserRead == false);
+            var messageCount = db.Messages.Count(x => x.UserTo == userId && x.UserRead == false);
             ViewBag.MsgCount = messageCount;
            
 

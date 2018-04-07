@@ -33,10 +33,10 @@ namespace SocialNetworkingSignalR.Models.ViewModels.Profile
             Message = row.Message;
             DataSent = row.DataSent;
             UserRead = row.UserRead;
-            FromId = row.FromUsers.Id;
-            FromUsername = row.FromUsers.Username;
-            FromFirstName = row.FromUsers.FirstName;
-            FromLastName = row.FromUsers.LastName;
+            //FromId = row.FromUsers.Id;
+            //FromUsername = row.FromUsers.Username;
+           // FromFirstName = row.FromUsers.FirstName;
+            //FromLastName = row.FromUsers.LastName;
         }
     }
 }

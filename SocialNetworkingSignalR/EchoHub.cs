@@ -91,5 +91,44 @@ namespace SocialNetworkingSignalR
 
 
         }
+
+        public void NotifyOfMessage(string friend)
+        {
+            // init db
+            Db db = new Db();
+
+            //get user id
+            UserDTO userDTO = db.Users.Where(x => x.Username.Equals(friend)).FirstOrDefault();
+            int friendId = userDTO.Id;
+
+            //Get message count
+            var messageCount = db.Messages.Count(x => x.UserTo == friendId && x.UserRead == false);
+
+            //set clients
+            var clients = Clients.Others;
+
+
+            //call js function
+            clients.msgcount(friend, messageCount);
+        }
+
+        public void NotifyOfMessageOwner()
+        {
+            Db db = new Db();
+
+            //get user id
+            UserDTO userDTO = db.Users.Where(x => x.Username.Equals(Context.User.Identity.Name)).FirstOrDefault();
+            int userId = userDTO.Id;
+
+            //Get message count
+            var messageCount = db.Messages.Count(x => x.UserTo == userId && x.UserRead == false);
+
+            //set clients
+            var clients = Clients.Caller;
+
+
+            //call js function
+            clients.msgcount(Context.User.Identity.Name, messageCount);
+        }
     }
 }

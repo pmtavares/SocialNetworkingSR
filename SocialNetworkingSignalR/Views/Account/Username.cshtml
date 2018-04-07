@@ -48,7 +48,7 @@
                     <div class="msgtextarea">
                         <textarea id="msgarea"></textarea>
                     </div>
-                    <a href="#" id="sendmsg" class="ta">Send Message</a>
+                    <a href="#" id="sendmsg" class="ta btn btn-info">Send Message</a>
                     <img src="~/Content/Images/ajax-loaderblack.gif" class="hide" />
                     <div class="sendmsgnotif alert alert-success hide">Message Sent</div>
                 </div>
@@ -156,7 +156,7 @@
                     $(".arefriendsdiv").removeClass("alert-info").addClass("alert-warning")
                         .html("<p>pending friend request</p>");
                 }).done(function () {
-                            hub.server.notify(friend);
+                    hub.server.notifyOfmessage(friend);
                         
                     });
 
@@ -203,7 +203,6 @@
             $("body").on("click", "#sendmsg", function (e) {
                 e.preventDefault();
                 var $this = $(this);
-                debugger
                 $this.parent().find("img").removeClass("hide");
 
                 var url = "profile/SendMessage";
@@ -214,17 +213,43 @@
 
                 }).done(function () {
                     $this.parent().find("img").addClass("hide");
-                    //hub.server.notifyOfMessage(friend);
+                    hub.server.notifyOfMessage(friend);
                     $("#msgarea").val("");
                     $this.parent().find(".sendmsgnotif").removeClass("hide");
                     setTimeout(function () {
                         $this.parent().find(".sendmsgnotif").fadeOut("fast", function () {
                             $this.parent().find(".sendmsgnotif").addClass("hide");
                         });
-                        
+
                     }, 2000);
                 });
-            })
+            });
+
+            //Display unread messages
+            $("body").on("click", ".msgnotif.red", function () {
+                $("#msgnotiful").empty();
+                var url = "profile/DisplayUnreadMessages";
+
+                $.post(url, {}, function (data) {
+                    if (data.length > 0) {
+                        $("#msgnotiful").append("<li class=closemsglist>X</li>");
+                    }
+                    for (var i = 0; i < data.length; i++) {
+                        var obj = data[i];
+                        $("#msgnotiful")
+                            
+                            .append("<li class='msgnotifli'><a href='/" + obj.UserFrom +
+                            "'><img src='/Uploads/" + obj.UserFrom + ".jpg' class='imglist'/></a>" + " " + obj.Message + "</li>");
+
+                    }
+                }).done(function () {
+                    hub.server.notifyOfMessageOwner();
+                    });
+            });
+
+            $("body").on("click", ".closemsglist", function () {
+                $("#msgnotiful").empty();
+            });
            
 
         })
@@ -267,6 +292,20 @@
             $(".friends." + u2).text("0");
         }
     }
+
+
+    hub.client.msgcount = function (username, count) {
+        if (count > 0) {
+            $(".msgnotif." + username).text(count);
+            $(".msgnotif." + username).addClass("red");
+        }
+        else {
+            $(".msgnotif." + username).text("");
+            $(".msgnotif." + username).removeClass("red");
+           
+        }
+    }
+    
 
 
 </script>    
