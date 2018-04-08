@@ -171,3 +171,12 @@ div.em{
     left: 180px;
     bottom: 0px;
 }
+.friendwall
+{
+    margin: 10px;
+}
+.friendwall img{
+    width: 60px;
+    height: 80px;
+    margin-right: 10px;
+}

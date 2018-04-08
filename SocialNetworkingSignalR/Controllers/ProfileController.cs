@@ -168,5 +168,19 @@ namespace SocialNetworkingSignalR.Controllers
 
 
         }
+        [HttpPost]
+        public void UpdateWallMessage(int id, string message)
+        {
+            //Init DB
+            Db db = new Db();
+            //Get user id
+
+            WallDTO wall = db.Walls.Find(id);
+
+            wall.Message = message;
+            wall.DateEdited = DateTime.Now;
+
+            db.SaveChanges();
+        }
     }
 }

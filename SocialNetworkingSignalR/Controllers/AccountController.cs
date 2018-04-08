@@ -1,5 +1,6 @@
 ﻿using SocialNetworkingSignalR.Models.Data;
 using SocialNetworkingSignalR.Models.ViewModels.Account;
+using SocialNetworkingSignalR.Models.ViewModels.Profile;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -114,7 +115,27 @@ namespace SocialNetworkingSignalR.Controllers
             //get View bag Message count
             var messageCount = db.Messages.Count(x => x.UserTo == userId && x.UserRead == false);
             ViewBag.MsgCount = messageCount;
-           
+
+
+            //View bag user wall
+            WallDTO wall = new WallDTO();
+            ViewBag.WallMessage = db.Walls.Where(x => x.Id == userId).Select(x => x.Message).FirstOrDefault();
+            ViewBag.UserId = userId;
+
+            //Viewbag friends walls
+            List<int> friendIds1 = db.Friends.Where(x => x.User1 == userId && x.Active == true).ToArray()
+                .Select(x => x.User2).ToList();
+
+            List<int> friendIds2 = db.Friends.Where(x => x.User2 == userId && x.Active == true).ToArray()
+                .Select(x => x.User1).ToList();
+
+            List<int> allFriendsIds = friendIds1.Concat(friendIds2).ToList();
+
+            List<WallVM> walls = db.Walls.Where(x => allFriendsIds.Contains(x.Id)).ToArray().OrderByDescending(x => x.DateEdited)
+                .Select(x => new WallVM(x)).ToList();
+
+
+            ViewBag.Walls = walls;
 
             return View();
         }
@@ -192,6 +213,16 @@ namespace SocialNetworkingSignalR.Controllers
 
                 file.SaveAs(path);
             }
+
+            //Add to wall
+            WallDTO wall = new WallDTO();
+            wall.Id = userId;
+            wall.Message = "";
+            wall.DateEdited = DateTime.Now;
+
+            db.Walls.Add(wall);
+            db.SaveChanges();
+
             return Redirect("~/" + model.Username);
         }
 

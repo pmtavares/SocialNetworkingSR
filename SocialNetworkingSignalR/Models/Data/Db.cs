@@ -11,5 +11,6 @@ namespace SocialNetworkingSignalR.Models.Data
         public DbSet<UserDTO> Users { get; set; }
         public DbSet<FriendDTO> Friends { get; set; }
         public DbSet<MessageDTO> Messages { get; set; }
+        public DbSet<WallDTO> Walls { get; set; }
     }
 }

@@ -40,6 +40,22 @@
 
     </div>
     <div class="col-xs-12 col-md-6 wall">
+    @if (ViewBag.UserType == "owner")
+    {
+        <h3>Say Something</h3>
+        if(ViewBag.WallMessage == "")
+        {
+            <textarea id="say@(ViewBag.UserId)" placeholder="Say something..."></textarea>
+        }
+        else
+        {
+            <textarea id="say@(ViewBag.UserId)" placeholder="Say something...">@ViewBag.WallMessage</textarea>
+        }
+        <a href="#" id="sendsay" class="ta btn btn-info" data-id="@ViewBag.UserId">Say</a>
+        <img src="~/Content/Images/ajax-loaderblack.gif" class="hide" />
+    }
+
+
         @if (ViewBag.UserType == "guest")
         {
             if (ViewBag.NotFriends == null)
@@ -59,7 +75,23 @@
     </div>
 
 </div>
-
+<div class="row friendwallrow">
+    @if(Enumerable.Count(ViewBag.Walls) > 0)
+    {
+        <h3>What your friends are saying</h3>
+        foreach(var item in ViewBag.Walls)
+        {
+            <div class="friendwall">
+                <img src="~/Uploads/@(item.Id).jpg"/>
+                @item.Message
+            </div>
+        }
+    }
+    else
+    {
+        <h3>There are no friends walls</h3>
+    }
+</div>
 
 
 @section Scripts{
@@ -73,7 +105,7 @@
 
         //Live search
         $("#searchtext").keyup(function () {
- 
+
             var searchVal = $("#searchtext").val();
 
             $("#livesearch").empty();
@@ -92,7 +124,7 @@
                     var obj = data[i];
                     $("#livesearch")
                         .append("<li class='livesearchli'><a href='/" + obj.Username + "'><img src='/Uploads/" + obj.UserId + ".jpg' class=searchImg />" + " " + " " + obj.FirstName + " " + obj.LastName + "</a></li>");
-                        
+
                 }
             });
         })
@@ -120,7 +152,7 @@
         });
     })
 
-    
+
 
 
     $("body").on("click", ".closeSearch", function () {
@@ -138,7 +170,7 @@
     //Setup connection
     var hub = $.connection.echo;
 
-   
+
     //Connect to hub
     $.connection.hub
         .start()
@@ -150,14 +182,14 @@
             $(".addfriend").click(function (e) {
                 e.preventDefault();
                 var friend = '@ViewBag.Username';
-                
+
                 var url = "/Profile/AddFriend";
                 $.post(url, { friend: friend }, function (data) {
                     $(".arefriendsdiv").removeClass("alert-info").addClass("alert-warning")
                         .html("<p>pending friend request</p>");
                 }).done(function () {
-                    hub.server.notifyOfmessage(friend);
-                        
+                    hub.server.notifyOfMessage(friend);
+
                     });
 
             });
@@ -193,7 +225,7 @@
                 }).done(function () {
                     $this.parent().fadeOut("fast");
                     hub.server.getFrCount();
-                    
+
                 });
             })
 
@@ -237,7 +269,7 @@
                     for (var i = 0; i < data.length; i++) {
                         var obj = data[i];
                         $("#msgnotiful")
-                            
+
                             .append("<li class='msgnotifli'><a href='/" + obj.UserFrom +
                             "'><img src='/Uploads/" + obj.UserFrom + ".jpg' class='imglist'/></a>" + " " + obj.Message + "</li>");
 
@@ -250,11 +282,32 @@
             $("body").on("click", ".closemsglist", function () {
                 $("#msgnotiful").empty();
             });
-           
+
+
+
+            //Update wall
+             $("#sendsay").click(function (e) {
+                e.preventDefault();
+                 var $this = $(this);
+
+                 $this.parent().find("img").removeClass("hide");
+                 
+
+                var url = "profile/UpdateWallMessage";
+                var id = $(this).data("id");
+                var message = $(this).parent().find("textarea").val();
+
+                $.post(url, { id: id, message: message }, function (data) {
+
+                }).done(function () {
+                    
+                    $this.parent().find("img").addClass("hide");
+                });
+            });
 
         })
 
-  
+
     //client function to be called from server
     hub.client.test = function (msg) {
         console.log(msg);
@@ -302,10 +355,10 @@
         else {
             $(".msgnotif." + username).text("");
             $(".msgnotif." + username).removeClass("red");
-           
+
         }
     }
-    
+
 
 
 </script>    
